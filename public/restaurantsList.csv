@@ -1,0 +1,101 @@
+Restaurant ID,Restaurant Name,Cuisines,Average Cost for two,Currency,Has Table booking,Has Online delivery,Aggregate rating,Rating color,Rating text,Votes
+6317637,Le Petit Souffle,"French, Japanese, Desserts",1100,Botswana Pula(P),Yes,No,4.8,Dark Green,Excellent,314
+6304287,Izakaya Kikufuji,Japanese,1200,Botswana Pula(P),Yes,No,4.5,Dark Green,Excellent,591
+6300002,Heat - Edsa Shangri-La,"Seafood, Asian, Filipino, Indian",4000,Botswana Pula(P),Yes,No,4.4,Green,Very Good,270
+6318506,Ooma,"Japanese, Sushi",1500,Botswana Pula(P),No,No,4.9,Dark Green,Excellent,365
+6314302,Sambo Kojin,"Japanese, Korean",1500,Botswana Pula(P),Yes,No,4.8,Dark Green,Excellent,229
+18189371,Din Tai Fung,Chinese,1000,Botswana Pula(P),No,No,4.4,Green,Very Good,336
+6300781,Buffet 101,"Asian, European",2000,Botswana Pula(P),Yes,No,4,Green,Very Good,520
+6301290,Vikings,"Seafood, Filipino, Asian, European",2000,Botswana Pula(P),Yes,No,4.2,Green,Very Good,677
+6300010,Spiral - Sofitel Philippine Plaza Manila,"European, Asian, Indian",6000,Botswana Pula(P),Yes,No,4.9,Dark Green,Excellent,621
+6314987,Locavore,Filipino,1100,Botswana Pula(P),Yes,No,4.8,Dark Green,Excellent,532
+6309903,Silantro Fil-Mex,"Filipino, Mexican",800,Botswana Pula(P),No,No,4.9,Dark Green,Excellent,1070
+6309455,Mad Mark's Creamery & Good Eats,"American, Ice Cream, Desserts",900,Botswana Pula(P),Yes,No,4.2,Green,Very Good,488
+6318433,Silantro Fil-Mex,"Filipino, Mexican",800,Botswana Pula(P),No,No,4.8,Dark Green,Excellent,294
+6310470,Guevarra's,Filipino,1000,Botswana Pula(P),Yes,No,4.2,Green,Very Good,458
+6314605,Sodam Korean Restaurant,Korean,700,Botswana Pula(P),No,No,4.3,Green,Very Good,223
+18185059,Cafe Arabelle,"Cafe, American, Italian, Filipino",800,Botswana Pula(P),No,No,3.6,Yellow,Good,29
+18182702,Nonna's Pasta & Pizzeria,"Italian, Pizza",850,Botswana Pula(P),No,No,4,Green,Very Good,72
+6318213,Balay Dako,Filipino,1200,Botswana Pula(P),Yes,No,4.5,Dark Green,Excellent,211
+18255654,Hobing Korean Dessert Cafe,"Cafe, Korean, Desserts",600,Botswana Pula(P),No,No,4.5,Dark Green,Excellent,118
+6308205,Wildflour Cafe + Bakery,"Cafe, Bakery, American, Italian",1500,Botswana Pula(P),Yes,No,4.4,Green,Very Good,392
+6315438,NIU by Vikings,"Seafood, American, Mediterranean, Japanese",3000,Botswana Pula(P),Yes,No,4.7,Dark Green,Excellent,535
+6310406,The Food Hall by Todd English,"American, Asian, Italian, Seafood",1800,Botswana Pula(P),Yes,No,4.5,Dark Green,Excellent,618
+6600681,Chez Michou,"Fast Food, French",55,Brazilian Real(R$),No,No,3,Orange,Average,6
+6601005,Caf� Daniel Briand,Cafe,30,Brazilian Real(R$),No,No,3.8,Yellow,Good,9
+6600292,Casa do Biscoito Mineiro,Bakery,45,Brazilian Real(R$),No,No,3.7,Yellow,Good,11
+6600441,Maori,Brazilian,60,Brazilian Real(R$),No,No,3.8,Yellow,Good,11
+6600970,Pizza �� Bessa,Pizza,50,Brazilian Real(R$),No,No,3.2,Orange,Average,11
+6600379,Sushi Loko,Japanese,80,Brazilian Real(R$),No,No,3.1,Orange,Average,10
+6600214,Beirute,Arabian,90,Brazilian Real(R$),No,No,3.7,Yellow,Good,8
+6601218,New Koto,Japanese,200,Brazilian Real(R$),No,No,3.7,Yellow,Good,5
+6600060,Sandubas Caf�,"Brazilian, Cafe",30,Brazilian Real(R$),No,No,0,White,Not rated,2
+6600083,Villa Tevere,Italian,150,Brazilian Real(R$),No,No,4.1,Green,Very Good,12
+6601515,Rovereto,Pizza,100,Brazilian Real(R$),No,No,3.1,Orange,Average,9
+6601361,Buena Carne,"Bar Food, Brazilian",60,Brazilian Real(R$),No,No,3.6,Yellow,Good,9
+6601602,Taco Pep,"Mexican, Grill",100,Brazilian Real(R$),No,No,4.3,Green,Very Good,29
+6601589,Coco Bambu,International,230,Brazilian Real(R$),No,No,4.2,Green,Very Good,17
+6601862,Tayp��,"Peruvian, Latin American",100,Brazilian Real(R$),No,No,3.6,Yellow,Good,5
+6601595,Outback Steakhouse,"American, Grill",150,Brazilian Real(R$),No,No,4,Green,Very Good,10
+6601158,Manzu��,Seafood,240,Brazilian Real(R$),No,No,3.2,Orange,Average,6
+6600427,Coco Bambu,International,230,Brazilian Real(R$),No,No,4.9,Dark Green,Excellent,30
+6600116,Gero,Italian,350,Brazilian Real(R$),No,No,3.3,Orange,Average,8
+6601457,Brazilian American Burgers,"American, Burger",50,Brazilian Real(R$),No,No,3.6,Yellow,Good,9
+7303219,Pesqueiro Eco Gourmet,"Seafood, Bar Food, Brazilian",140,Brazilian Real(R$),No,No,4,Green,Very Good,7
+7304307,Confeitaria Colombo,"Desserts, Cafe",100,Brazilian Real(R$),No,No,4.8,Dark Green,Excellent,29
+7301215,Bibi,"Juices, Healthy Food",60,Brazilian Real(R$),No,No,4.7,Dark Green,Excellent,24
+7300596,Cervantes,"Beverages, Bar Food, Fast Food",90,Brazilian Real(R$),No,No,4.5,Dark Green,Excellent,29
+7300612,Amir,Lebanese,170,Brazilian Real(R$),No,No,4.2,Green,Very Good,11
+7300704,TT Burger,Burger,60,Brazilian Real(R$),No,No,4.8,Dark Green,Excellent,19
+7300955,Braseiro da G��vea,"Brazilian, Bar Food",100,Brazilian Real(R$),No,No,4.9,Dark Green,Excellent,40
+7300521,Balada Mix,"Brazilian, Healthy Food, Juices, Pizza",90,Brazilian Real(R$),No,No,4.6,Dark Green,Excellent,21
+7300515,Garota de Ipanema,"Brazilian, Bar Food",120,Brazilian Real(R$),No,No,4.9,Dark Green,Excellent,49
+7300483,Zaz�� Bistr�� Tropical,Brazilian,170,Brazilian Real(R$),No,No,4.6,Dark Green,Excellent,21
+7301064,Fil� de Ouro,Brazilian,90,Brazilian Real(R$),No,No,4.3,Green,Very Good,14
+7304312,D.O.C Ristorante,Italian,150,Brazilian Real(R$),No,No,4,Green,Very Good,5
+7300004,Sushi Leblon,Japanese,250,Brazilian Real(R$),No,No,4.6,Dark Green,Excellent,25
+7300868,Talho Capixaba,"Bakery, Sandwich, Brazilian",120,Brazilian Real(R$),No,No,4.4,Green,Very Good,13
+7302637,Leme Light,Brazilian,40,Brazilian Real(R$),No,No,4.2,Green,Very Good,7
+7302140,Shirley,"Brazilian, Seafood",250,Brazilian Real(R$),No,No,4.2,Green,Very Good,8
+7305048,Quiosque Chopp Brahma,"Bar Food, Brazilian",70,Brazilian Real(R$),No,No,0,White,Not rated,1
+7302898,Apraz�_vel,Brazilian,300,Brazilian Real(R$),No,No,4.7,Dark Green,Excellent,44
+7302859,Aconchego Carioca,"Brazilian, Bar Food",85,Brazilian Real(R$),No,No,4.6,Dark Green,Excellent,24
+7301700,Garota de Ipanema,"Brazilian, Bar Food",80,Brazilian Real(R$),No,No,4.3,Green,Very Good,10
+6706313,Cantina Famiglia Mancini,"Italian, Pizza",250,Brazilian Real(R$),No,No,4.5,Dark Green,Excellent,49
+6704326,Templo da Carne - Marcos Bassi,"Steak, BBQ",250,Brazilian Real(R$),No,No,4.4,Green,Very Good,17
+6711179,Gopala Hari,Indian,70,Brazilian Real(R$),No,No,3.1,Orange,Average,5
+6702797,Jiquitaia,Brazilian,100,Brazilian Real(R$),No,No,4.1,Green,Very Good,15
+6700475,Skye - Hotel Unique,"Beverages, International",300,Brazilian Real(R$),No,No,4.8,Dark Green,Excellent,59
+6713413,Les 3 Brasseurs,"French, Brazilian, Beverages",120,Brazilian Real(R$),No,No,4.6,Dark Green,Excellent,30
+6714340,Red Steak & Burger,"Brazilian, Grill",75,Brazilian Real(R$),No,No,3.9,Yellow,Good,5
+6710645,Cantinho da Gula,Brazilian,55,Brazilian Real(R$),No,No,0,White,Not rated,0
+6700402,Paris 6 Classique,French,200,Brazilian Real(R$),No,No,3.4,Orange,Average,73
+6700846,Kawa Sushi,"Sushi, Japanese",120,Brazilian Real(R$),No,No,3.5,Yellow,Good,9
+6702159,A Figueira Rubaiyat,"BBQ, Grill, Brazilian",300,Brazilian Real(R$),No,No,4.3,Green,Very Good,39
+6711666,Kinoshita,Sushi,230,Brazilian Real(R$),No,No,3.9,Yellow,Good,12
+6701257,Meats,"Gourmet Fast Food, Burger",120,Brazilian Real(R$),No,No,4.3,Green,Very Good,68
+6706211,Paribar,"Brazilian, Italian",150,Brazilian Real(R$),No,No,4.3,Green,Very Good,46
+6705858,Terra�_o It��lia,Italian,400,Brazilian Real(R$),No,No,4.4,Green,Very Good,37
+6701419,Divino Fog�o,"Brazilian, Mineira",65,Brazilian Real(R$),No,No,0,White,Not rated,2
+6703956,Super Grill,Brazilian,50,Brazilian Real(R$),No,No,0,White,Not rated,2
+6709580,Esquina Mocot�_,"Brazilian, North Eastern",100,Brazilian Real(R$),No,No,4.4,Green,Very Good,22
+6703176,Veloso,"Brazilian, Bar Food, Beverages",70,Brazilian Real(R$),No,No,4.6,Dark Green,Excellent,58
+6713772,Sainte Marie Gastronomia,"Lebanese, Arabian",120,Brazilian Real(R$),No,No,4.1,Green,Very Good,11
+17284404,Austin's BBQ and Oyster Bar,"BBQ, Burger, Seafood",25,Dollar($),No,No,3.3,Orange,Average,35
+17284203,BJ's Country Buffet,"American, BBQ",10,Dollar($),No,No,3.3,Orange,Average,25
+17284105,Cookie Shoppe,,0,Dollar($),No,No,3.4,Orange,Average,34
+17284302,El Vaquero Mexican Restaurant,Mexican,0,Dollar($),No,No,3.4,Orange,Average,45
+17284397,Elements Coffee Co - Northwest,"Coffee and Tea, Sandwich",10,Dollar($),No,No,3.4,Orange,Average,26
+17284211,Pearly's Famous Country Cookng,,0,Dollar($),No,No,3.4,Orange,Average,36
+17284094,Chick-fil-A,Fast Food,10,Dollar($),No,No,3.5,Yellow,Good,67
+17284409,Guang Zhou Chinese Restaurant,"Asian, Chinese, Vegetarian",10,Dollar($),No,No,3.9,Yellow,Good,141
+17284139,Harvest Moon,"Pizza, Bar Food, Sandwich",25,Dollar($),No,No,3.7,Yellow,Good,147
+17284403,Henry Campbell's Steakhouse,"Steak, Tapas, Bar Food",70,Dollar($),No,No,3.5,Yellow,Good,51
+17284145,Hong Kong Cafe,"Chinese, Seafood, Vegetarian",25,Dollar($),No,No,3.6,Yellow,Good,88
+17284150,House of China Restaurant II,Chinese,10,Dollar($),No,No,3.8,Yellow,Good,153
+17284158,Jimmie's Hot Dogs,,10,Dollar($),No,No,3.9,Yellow,Good,160
+17284175,Locos Grill & Pub,"American, Burger, Sandwich",25,Dollar($),No,No,3.5,Yellow,Good,57
+17284179,Longhorn Steakhouse,"American, Steak",25,Dollar($),No,No,3.5,Yellow,Good,58
+17284197,Mikata Japanese Steakhouse,"Japanese, Steak, Sushi",40,Dollar($),No,No,3.6,Yellow,Good,115
+17284241,Shogun Japanese Steak House,"Japanese, Steak, Sushi",40,Dollar($),No,No,3.5,Yellow,Good,51
+17284390,The Catch Seafood Room & Oyster Bar,"Seafood, Tapas, Bar Food",40,Dollar($),No,No,3.8,Yellow,Good,250
