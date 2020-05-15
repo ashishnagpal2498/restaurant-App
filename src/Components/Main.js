@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 import Papa from 'papaparse'
 import Card from './Card'
+let searchQuery;
 class Main extends Component {
     state = {
-            data: [],
+        data: [],
         filterData: [],
-        cuisines: []
+        cuisines: [],
+        filters: {
+            search: "",
+            cuisines: "",
+            rating: "",
+        },
+        currency: {},
+        currencyData: {}
     };
 
     componentWillMount() {
         this.getCsvData();
+        //https://restcountries.eu/rest/v2/all?fields=currencies
     }
 
     fetchCsv = () => {
@@ -27,15 +36,12 @@ class Main extends Component {
         let data = [];
         let arr = result.data;
         let cuisines = [];
+        let currency = {};
         let headings = arr[0].map((item)=>{
             if(item.includes(" ")){
                 return item.split(' ').reduce((acc,val,index) => {
-                    console.log(val)
-                    let indexVal = val.substr(0,1).toUpperCase();
-                    let value = indexVal + val.substr(1).toLowerCase()
-                    if(index === 1){
-                        return acc.toLowerCase() + value;
-                    }
+                    let value = val.substr(0,1).toUpperCase() + val.substr(1).toLowerCase();
+                    if(index === 1){return acc.toLowerCase() + value;}
                     else return acc + value;
                 });
             }
@@ -48,7 +54,8 @@ class Main extends Component {
             arr[i].map((item,index) =>{
                 obj = {...obj,
                 [headings[index]]:item}
-                if(headings[index] === "Cuisines")
+                // Unique Cuisines
+                if(headings[index] === "cuisines")
                 {   if(item.includes(","))
                     {
                         let array = item.split(',');
@@ -67,7 +74,11 @@ class Main extends Component {
                         }
                 }
                 }
-            })
+                //Unique Currency
+                if(headings[index] === "currency" && !(Object.keys(currency).includes(item.toLowerCase())))
+                { // Fetch from currency - add  symbol
+                }
+            });
             data.push(obj);
         }
         this.setState({data,filterData:data,cuisines},()=>{
@@ -83,18 +94,35 @@ class Main extends Component {
             complete: this.getData
         });
     }
+    filterData = () => {
+        let filterData = JSON.parse(JSON.stringify(this.state.data));
+        let filters = this.state.filters;
+        if(filters.search)
+        {
+            filterData = filterData.filter((item) =>
+                JSON.stringify(item).toLowerCase().includes(filters.search.toLowerCase()))
+            console.log("filterData",filterData)
+        }
+        this.setState({filterData})
+    };
+
     onChangeHandler = (event) =>{
+        let filters = JSON.parse(JSON.stringify(this.state.filters))
         if(event.target.id === "searchBox"){
             //Filter the list -
-
+            clearTimeout(searchQuery);
+            searchQuery = setTimeout(this.filterData,700);
+            filters[event.target.name] = event.target.value;
         }
+
+        this.setState({filters});
     }
 
     render() {
         return (
             <div>
                 <div className="searchBox">
-                    <input type="text" onChange={this.onChangeHandler} id="searchBox"/>
+                    <input type="text" name="search" value={this.state.filters.search} onChange={this.onChangeHandler} id="searchBox"/>
                     <label className="placeholder-label" for="searchBox">Search a restaurant</label>
                 </div>
                 <select className="cuisine-filter" id="cuisine">
