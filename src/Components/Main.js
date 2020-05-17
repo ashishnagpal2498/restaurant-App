@@ -3,18 +3,28 @@ import Papa from 'papaparse'
 import Card from './Card'
 let searchQuery;
 class Main extends Component {
-    state = {
-        data: [],
-        filterData: [],
-        cuisines: [],
-        filters: {
-            search: "",
-            cuisines: "",
-            rating: "",
-        },
-        currency: {},
-        currencyData: {}
-    };
+    constructor() {
+        super();
+        this.state = {
+            loader:true,
+            data: [],
+            filterData: [],
+            cuisines: [],
+            filters: {
+                search: "",
+                cuisines: "all",
+                rating: "",
+            },
+            currency: {},
+            currencyData: {},
+        };
+        this.rating = [
+            "> 1",
+            "> 2",
+            "> 3",
+            "> 4 "
+        ];
+    }
 
     componentWillMount() {
         this.getCsvData();
@@ -49,7 +59,7 @@ class Main extends Component {
                 return item.toLowerCase();
             }
         })
-        for(let i=1;i<arr.length;i++)
+        for(let i=1;i<arr.length - 1;i++)
         {   let obj = {};
             arr[i].map((item,index) =>{
                 obj = {...obj,
@@ -81,7 +91,7 @@ class Main extends Component {
             });
             data.push(obj);
         }
-        this.setState({data,filterData:data,cuisines},()=>{
+        this.setState({data,filterData:data,cuisines,loader:false},()=>{
             console.log("data ",data);
             console.log('Cuisine',this.state.cuisines)
         });
@@ -94,28 +104,41 @@ class Main extends Component {
             complete: this.getData
         });
     }
-    filterData = () => {
-        let filterData = JSON.parse(JSON.stringify(this.state.data));
+    filterOnSearch = () => {
+        let filterData = JSON.parse(JSON.stringify(this.state.filterData));
+        console.log("inside Search -- ",filterData)
         let filters = this.state.filters;
         if(filters.search)
         {
             filterData = filterData.filter((item) =>
                 JSON.stringify(item).toLowerCase().includes(filters.search.toLowerCase()))
-            console.log("filterData",filterData)
         }
-        this.setState({filterData})
+        this.setState({filterData,loader:false})
     };
 
     onChangeHandler = (event) =>{
         let filters = JSON.parse(JSON.stringify(this.state.filters))
-        if(event.target.id === "searchBox"){
+        let filterData = JSON.parse(JSON.stringify(this.state.data));
+        filters[event.target.name] = event.target.value;
+        this.setState({loader:true});
+        if(event.target.id === "searchBox" || this.state.filters.search){
             //Filter the list -
             clearTimeout(searchQuery);
-            searchQuery = setTimeout(this.filterData,700);
-            filters[event.target.name] = event.target.value;
+            searchQuery = setTimeout(this.filterOnSearch,800);
         }
-
-        this.setState({filters});
+        if((event.target.id === "cuisines" && event.target.value !== "all") || filters.cuisines !== "all" ) {
+            console.log(event.target.value,"CUISINE");
+            // event.target. value - new search value - vo search karke and
+            // filter. cuisine , then - value initially not set , then -
+            filterData = filterData.filter(item => item.cuisines.toLowerCase().includes(filters.cuisines.toLowerCase()));
+        }
+        console.log(event.target.id,"value",event.target.value);
+        //If search value exist then loader will get false in that only
+        this.setState({
+            filters,
+            filterData,
+            loader:filters.search.length>0
+        });
     }
 
     render() {
@@ -125,22 +148,32 @@ class Main extends Component {
                     <input type="text" name="search" value={this.state.filters.search} onChange={this.onChangeHandler} id="searchBox"/>
                     <label className="placeholder-label" for="searchBox">Search a restaurant</label>
                 </div>
-                <select className="cuisine-filter" id="cuisine">
-                    <option value="All">All</option>
+                <h3>Filter By: </h3>
+                <select className="filter" value={this.state.filters.cuisines} onChange={this.onChangeHandler} id="cuisines" name="cuisines">
+                    <option value="all">All</option>
                     {this.state.cuisines.map((item,index)=> {
                         return <option value={item} key={index}>{item}</option>
                     })}
                 </select>
-                <div className="filter-dropdown">
-                    <ul className="filter-dropdown-menu">
-                      <li>jjd</li>
-                    </ul>
+                <select className="filter" id="rating" name="rating">
+                    <option value="all">None</option>
+                    {this.rating.map(item =>
+                        (<option value={item}>{item}</option> )) }
+                </select>
+                <div className="filters-selected">
+
                 </div>
-                <ul className="cards">
-                    {this.state.filterData.map((restaurant,index)=> {
-                        return <Card key={index} res={restaurant} />
-                    })}
-                </ul>
+                <div className="outer">
+                    {this.state.loader ?
+                        <div className="loader"> </div>
+                        :
+                        <ul className="cards">
+                            {this.state.filterData.map((restaurant, index) => {
+                                return <Card key={index} res={restaurant}/>
+                            })}
+                        </ul>
+                    }
+                </div>
             </div>
         );
     }

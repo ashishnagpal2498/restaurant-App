@@ -2,6 +2,26 @@
     margin: 0;
     box-sizing: border-box;
 }
+.loader {
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+    width: 40px;
+    border: 5px solid lightgray;
+    border-top: 5px solid black;
+    border-radius: 100px;
+    animation: 2s rotate linear infinite;
+}
+@keyframes rotate {
+    0%{
+    transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 .heading {
     font-size: 20px;
     letter-spacing: 1.5px;
@@ -37,26 +57,51 @@
 .searchBox input:valid + .placeholder-label {
     transform: translateY(-100%);
 }
+.filter-heading {
 
-.cuisine-filter {
+}
+.filter {
     border-radius: 20px;
     padding: 10px;
     font-size: 15px;
-    margin: 0 10px;
+    margin: 0 15px;
 }
-.filter-dropdown{
+.filters-selected{
+    padding: 10px;
+    border: 1px dot-dash black;
+    margin: 10px auto;
+    width: 80%;
+}
+.filters-selected > span {
+    display: inline-block;
+    padding: 10px;
+    margin: 3px 10px;
+}
+
+/*.filter-dropdown{*/
+/*    position: relative;*/
+/*    display: inline-block;*/
+/*}*/
+/*.filter-dropdown-menu {*/
+/*    list-style-type: none;*/
+/*    padding: 0;*/
+/*    box-shadow: 0 0 6px rgba(0,0,0,0.2);*/
+/*    border-bottom-left-radius: 10px;*/
+/*    border-bottom-right-radius: 10px;*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    left: 0;*/
+/*}*/
+
+/*.filter-dropdown:hover > .filter-dropdown-menu{*/
+/*    display: block;*/
+/*}*/
+
+.outer {
     position: relative;
-
+    padding: 15px;
+    min-height: 200px;
 }
-.filter-dropdown-menu {
-    list-style-type: none;
-    padding: 0;
-    box-shadow: 0 0 6px rgba(0,0,0,0.2);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-
-}
-
 /*Cards*/
 .cards{
     list-style-type: none;
