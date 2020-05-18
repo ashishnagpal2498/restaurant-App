@@ -14,9 +14,10 @@ class Main extends Component {
                 search: "",
                 cuisines: "all",
                 rating: "",
+                currency: ""
             },
             currency: {},
-            currencyData: {},
+            currencyData: [],
         };
         this.rating = [
             "> 1",
@@ -27,10 +28,19 @@ class Main extends Component {
     }
 
     componentWillMount() {
+        this.fetchCurrency();
         this.getCsvData();
-        //https://restcountries.eu/rest/v2/all?fields=currencies
+
     }
 
+    fetchCurrency = async () => {
+        const currencyData = await fetch('https://restcountries.eu/rest/v2/all?fields=currencies').then(response => response.json())
+            .catch(err => err);
+        if(!currencyData.error)
+        {   console.log(currencyData);
+            this.setState({currencyData})
+        }
+    }
     fetchCsv = () => {
         return fetch('/restaurantsList.csv').then(function (response) {
             let reader = response.body.getReader();
@@ -47,6 +57,7 @@ class Main extends Component {
         let arr = result.data;
         let cuisines = [];
         let currency = {};
+        let currencyData = this.state.currencyData;
         let headings = arr[0].map((item)=>{
             if(item.includes(" ")){
                 return item.split(' ').reduce((acc,val,index) => {
@@ -85,13 +96,23 @@ class Main extends Component {
                 }
                 }
                 //Unique Currency
-                if(headings[index] === "currency" && !(Object.keys(currency).includes(item.toLowerCase())))
+                if(headings[index] === "currency" && !(Object.keys(currency).includes(item.split('(')[0].trim().toLowerCase())))
                 { // Fetch from currency - add  symbol
+                  // Symbol - given - if not given then -
+                  for(let obj of currencyData)
+                  {
+                      if(obj.currencies[0].name.trim().toLowerCase().includes(item.split('(')[0].trim().toLowerCase())){
+                            currency = {
+                                ...currency,
+                                [item.split('(')[0].trim().toLowerCase()]: obj.currencies[0].symbol
+                            }
+                        }
+                  }
                 }
             });
             data.push(obj);
         }
-        this.setState({data,filterData:data,cuisines,loader:false},()=>{
+        this.setState({data,filterData:data,cuisines,loader:false,currency},()=>{
             console.log("data ",data);
             console.log('Cuisine',this.state.cuisines)
         });
@@ -132,6 +153,10 @@ class Main extends Component {
             // filter. cuisine , then - value initially not set , then -
             filterData = filterData.filter(item => item.cuisines.toLowerCase().includes(filters.cuisines.toLowerCase()));
         }
+        if((event.target.name === "currency") || filters.currency !== "")
+        {
+            filterData = filterData.filter(item => item.currency.toLowerCase().includes(filters.currency.toLowerCase()));
+        }
         console.log(event.target.id,"value",event.target.value);
         //If search value exist then loader will get false in that only
         this.setState({
@@ -146,20 +171,39 @@ class Main extends Component {
             <div>
                 <div className="searchBox">
                     <input type="text" name="search" value={this.state.filters.search} onChange={this.onChangeHandler} id="searchBox"/>
-                    <label className="placeholder-label" for="searchBox">Search a restaurant</label>
+                    <label className="placeholder-label" htmlFor="searchBox">Search a restaurant</label>
                 </div>
                 <h3>Filter By: </h3>
-                <select className="filter" value={this.state.filters.cuisines} onChange={this.onChangeHandler} id="cuisines" name="cuisines">
+                <div className="filter-div">
+                <div className="filter-wrapper">
+                    <label htmlFor={"cuisines"}>Cuisines</label>
+                    <select className="filter" value={this.state.filters.cuisines} onChange={this.onChangeHandler} id="cuisines" name="cuisines">
                     <option value="all">All</option>
                     {this.state.cuisines.map((item,index)=> {
                         return <option value={item} key={index}>{item}</option>
                     })}
                 </select>
+                </div>
+                    <div className="filter-wrapper">
+                        <label htmlFor={"rating"}>Rating</label>
                 <select className="filter" id="rating" name="rating">
                     <option value="all">None</option>
                     {this.rating.map(item =>
                         (<option value={item}>{item}</option> )) }
                 </select>
+                    </div>
+                    <div className="filter-wrapper">
+                        <label htmlFor={"rating"}>Currency</label>
+                        <div className="checkBoxDiv">
+                            {Object.keys(this.state.currency).map(item =>
+                                (   <React.Fragment>
+                                        <label htmlFor={"currency"}>{item}</label>
+                                    <input onChange={this.onChangeHandler} value={item} type="radio" name="currency" />
+                                    </React.Fragment>
+                                    )) }
+                        </div>
+                    </div>
+                </div>
                 <div className="filters-selected">
 
                 </div>
@@ -169,7 +213,7 @@ class Main extends Component {
                         :
                         <ul className="cards">
                             {this.state.filterData.map((restaurant, index) => {
-                                return <Card key={index} res={restaurant}/>
+                                return <Card key={index} currency={this.state.currency} res={restaurant}/>
                             })}
                         </ul>
                     }

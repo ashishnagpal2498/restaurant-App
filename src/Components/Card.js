@@ -18,7 +18,7 @@ const Card = ({res}) => {
             <li className="card-item">
                 <div className="card-body">
                     <div className="card-img">
-                        <img src={`/assets${displayImage(res.cuisines)}`} alt="card image"/>
+                        <img src={`/assets${displayImage(res.cuisines)}`} alt={'card'+res.cuisines}/>
                     </div>
                     <div className="card-details">
                         <h3 className="card-heading">

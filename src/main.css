@@ -60,11 +60,26 @@
 .filter-heading {
 
 }
+.filter-div {
+    display: flex;
+}
+.filter-wrapper {
+    flex: 1 20%;
+}
+.filter-wrapper > label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
 .filter {
     border-radius: 20px;
     padding: 10px;
     font-size: 15px;
     margin: 0 15px;
+}
+.filter option{
+    padding: 10px;
+    font-size: 15px;
 }
 .filters-selected{
     padding: 10px;
