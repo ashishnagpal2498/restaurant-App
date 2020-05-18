@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Card = ({res}) => {
+const Card = ({res,currency}) => {
     const images = ["asian","seafood","american","fastfood","brazilian","dessert","tea"]
     const displayImage = (value) => {
         if(!value) return "/default.jpg";
@@ -14,6 +14,10 @@ const Card = ({res}) => {
           return images.includes(cuisineVal) ? `/${cuisineVal}.jpg` : "/default.jpg";
       }
     };
+    const currencySymbol = (field) => {
+        let currencyKey = Object.keys(currency).find(item => field.toLowerCase().includes(item));
+        return currencyKey ? currency[currencyKey] : "$"
+    }
         return (
             <li className="card-item">
                 <div className="card-body">
@@ -35,20 +39,23 @@ const Card = ({res}) => {
                         </div>
                         {/*Average Cost */}
                         <div className="average-cost">
-                            Average Cost for Two
+                            Cost for Two
                         </div>
-                        <div className="average-cost">
+                        <div className="fx-b50">
                             {res.averageCostForTwo}
-                            <span>$</span>
+                            <span>{currencySymbol(res.currency)}</span>
                         </div>
                         {/*Rating And Votes*/}
-                        <div className="rating" style={{}}>
-                            {res.ratingText}
+                        <div className="fx-b50" style={{}}>
+                           Rating:  {res.ratingText}
                         </div>
-                        <div className="shineBox">
+                        <div className="fx-b50">
+                            Votes:
+                            <div className="shineBox">
                             <span>
-                                {res.votes}
+                               {res.votes}
                             </span>
+                        </div>
                         </div>
                     </div>
                 </div>

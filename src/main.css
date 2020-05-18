@@ -62,9 +62,11 @@
 }
 .filter-div {
     display: flex;
+    justify-content: center;
 }
 .filter-wrapper {
-    flex: 1 20%;
+    flex: 1 25%;
+    max-width: 25%;
 }
 .filter-wrapper > label {
     display: block;
@@ -173,6 +175,7 @@
     text-align: right;
     flex-basis: 15%;
     max-width: 15%;
+    display: inline-block;
 }
 .shineBox > span{
     display: inline-block;
@@ -182,11 +185,10 @@
     box-shadow: 0 0 6px rgba(192,192,192,0.5);
     background-color: white;
 }
-.average-cost{
+.fx-b50{
     flex-basis: 50%;
     max-width: 50%;
 }
-.rating {
-    flex-basis: 50%;
-    max-width: 50%;
+.checkBoxDiv > label {
+    margin: 0 5px;
 }

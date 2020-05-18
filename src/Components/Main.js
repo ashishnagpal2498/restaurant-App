@@ -14,22 +14,17 @@ class Main extends Component {
                 search: "",
                 cuisines: "all",
                 rating: "",
-                currency: ""
+                currency: "all"
             },
             currency: {},
             currencyData: [],
         };
-        this.rating = [
-            "> 1",
-            "> 2",
-            "> 3",
-            "> 4 "
-        ];
+        this.rating = [1, 2, 3, 4];
     }
 
     componentWillMount() {
         this.fetchCurrency();
-        this.getCsvData();
+        this.readCSV();
 
     }
 
@@ -37,10 +32,10 @@ class Main extends Component {
         const currencyData = await fetch('https://restcountries.eu/rest/v2/all?fields=currencies').then(response => response.json())
             .catch(err => err);
         if(!currencyData.error)
-        {   console.log(currencyData);
+        {
             this.setState({currencyData})
         }
-    }
+    };
     fetchCsv = () => {
         return fetch('/restaurantsList.csv').then(function (response) {
             let reader = response.body.getReader();
@@ -50,9 +45,16 @@ class Main extends Component {
                 return decoder.decode(result.value);
             });
         });
-    }
+    };
+    readCSV = async () => {
+        let csvData = await this.fetchCsv();
 
-    getData = (result) => {
+        Papa.parse(csvData, {
+            complete: this.processData
+        });
+    };
+
+    processData = (result) => {
         let data = [];
         let arr = result.data;
         let cuisines = [];
@@ -69,65 +71,54 @@ class Main extends Component {
             else{
                 return item.toLowerCase();
             }
-        })
-        for(let i=1;i<arr.length - 1;i++)
+        });
+        for(let i=1;i<arr.length;i++)
         {   let obj = {};
-            arr[i].map((item,index) =>{
-                obj = {...obj,
-                [headings[index]]:item}
-                // Unique Cuisines
-                if(headings[index] === "cuisines")
-                {   if(item.includes(","))
-                    {
-                        let array = item.split(',');
-                            array.map((i)=>{
-                                let value = i.trim();
-                        if(!cuisines.includes(value)){
-                            cuisines.push(value);
-                        }
-                    })
+            if(arr[i].length > 1) {
+                arr[i].map((item, index) => {
+                    obj = {
+                        ...obj,
+                        [headings[index]]: item
                     }
-                    else{
-                        let value = item.trim();
-                        if(!cuisines.includes(value))
-                        {
-                            cuisines.push(value);
-                        }
-                }
-                }
-                //Unique Currency
-                if(headings[index] === "currency" && !(Object.keys(currency).includes(item.split('(')[0].trim().toLowerCase())))
-                { // Fetch from currency - add  symbol
-                  // Symbol - given - if not given then -
-                  for(let obj of currencyData)
-                  {
-                      if(obj.currencies[0].name.trim().toLowerCase().includes(item.split('(')[0].trim().toLowerCase())){
-                            currency = {
-                                ...currency,
-                                [item.split('(')[0].trim().toLowerCase()]: obj.currencies[0].symbol
+                    // Unique Cuisines
+                    if (headings[index] === "cuisines") {
+                        if (item.includes(",")) {
+                            let array = item.split(',');
+                            array.map((i) => {
+                                let value = i.trim();
+                                if (!cuisines.includes(value)) {
+                                    cuisines.push(value);
+                                }
+                            })
+                        } else {
+                            let value = item.trim();
+                            if (!cuisines.includes(value)&& value.length > 1) {
+                                cuisines.push(value);
                             }
                         }
-                  }
-                }
-            });
-            data.push(obj);
+                    }
+                    //Unique Currency
+                    if (headings[index] === "currency" && currencyData.length > 0 && !(Object.keys(currency).includes(item.split('(')[0].trim().toLowerCase()))) { // Fetch from currency - add  symbol
+                        // Symbol - given - if not given then -
+                        for (let obj of currencyData) {
+                            if (obj.currencies[0].name.trim().toLowerCase().includes(item.split('(')[0].trim().toLowerCase())) {
+                                currency = {
+                                    ...currency,
+                                    [item.split('(')[0].trim().toLowerCase()]: obj.currencies[0].symbol
+                                };
+                                break;
+                            }
+                        }
+                    }
+                });
+                data.push(obj);
+            }
         }
-        this.setState({data,filterData:data,cuisines,loader:false,currency},()=>{
-            console.log("data ",data);
-            console.log('Cuisine',this.state.cuisines)
-        });
-    }
+        this.setState({data,filterData:data,cuisines,loader:false,currency});
+    };
 
-    getCsvData = async () => {
-        let csvData = await this.fetchCsv();
-
-        Papa.parse(csvData, {
-            complete: this.getData
-        });
-    }
     filterOnSearch = () => {
         let filterData = JSON.parse(JSON.stringify(this.state.filterData));
-        console.log("inside Search -- ",filterData)
         let filters = this.state.filters;
         if(filters.search)
         {
@@ -147,15 +138,19 @@ class Main extends Component {
             clearTimeout(searchQuery);
             searchQuery = setTimeout(this.filterOnSearch,800);
         }
-        if((event.target.id === "cuisines" && event.target.value !== "all") || filters.cuisines !== "all" ) {
+        if((event.target.id === "cuisines" && filters.cuisines !== "all") || filters.cuisines !== "all" ) {
             console.log(event.target.value,"CUISINE");
             // event.target. value - new search value - vo search karke and
             // filter. cuisine , then - value initially not set , then -
             filterData = filterData.filter(item => item.cuisines.toLowerCase().includes(filters.cuisines.toLowerCase()));
         }
-        if((event.target.name === "currency") || filters.currency !== "")
+        if((event.target.name === "currency" && filters.currency !== "all") || filters.currency !== "all")
         {
             filterData = filterData.filter(item => item.currency.toLowerCase().includes(filters.currency.toLowerCase()));
+        }
+        if((event.target.name === "rating" && filters.rating !=="all") || filters.rating !== "all")
+        {
+            filterData = filterData.filter(item => item.aggregateRating >= filters.rating)
         }
         console.log(event.target.id,"value",event.target.value);
         //If search value exist then loader will get false in that only
@@ -186,21 +181,25 @@ class Main extends Component {
                 </div>
                     <div className="filter-wrapper">
                         <label htmlFor={"rating"}>Rating</label>
-                <select className="filter" id="rating" name="rating">
+                <select value={this.state.filters.rating} onChange={this.onChangeHandler} className="filter" id="rating" name="rating">
                     <option value="all">None</option>
-                    {this.rating.map(item =>
-                        (<option value={item}>{item}</option> )) }
+                    {this.rating.map((item,index) =>
+                        (<option value={item} key={index}>{"> "+item}</option> )) }
                 </select>
                     </div>
                     <div className="filter-wrapper">
-                        <label htmlFor={"rating"}>Currency</label>
+                        <label htmlFor={"currency"}>Currency</label>
                         <div className="checkBoxDiv">
-                            {Object.keys(this.state.currency).map(item =>
-                                (   <React.Fragment>
-                                        <label htmlFor={"currency"}>{item}</label>
+                            <input value="all" onChange={this.onChangeHandler} type="radio" name="currency"/>
+                            <label htmlFor={"currency"}>None</label>
+                            {Object.keys(this.state.currency).map((item,index) =>
+                                (   <React.Fragment key={index}>
+
                                     <input onChange={this.onChangeHandler} value={item} type="radio" name="currency" />
+                                    <label htmlFor={"currency"}>{item}</label>
                                     </React.Fragment>
-                                    )) }
+                                    ))
+                            }
                         </div>
                     </div>
                 </div>
