@@ -4,30 +4,40 @@ import { SliderRail, Handle, Track, Tick } from "./sliderComponent"; // example 
 
 const sliderStyle = {
     position: "relative",
-    width: "100%"
+    width: "100%",
+    boxSizing: "border-box"
 };
 
 const domain = [100, 400];
-const defaultValues = [200, 300];
 
 let sliderTimeOut;
 
 class TwoSideSlider extends Component {
+    state = {
+        domain: this.props.domain ? [this.props.domain.minVal,this.props.domain.maxVal]   : [0,400]
+    };
     onUpdate = (value) => {
         clearTimeout(sliderTimeOut);
-        sliderTimeOut = setTimeout(()=> console.log(value),1000)
-    }
+        sliderTimeOut = setTimeout(()=> { console.log(value);
+            this.props.setLoader();
+            this.props.sliderChange();
+        },1000)
+    };
+    onChange = () => {
+
+    };
     render() {
         return (
             <div>
                 <Slider
                     mode={2}
                     step={10}
-                    domain={domain}
+                    domain={this.state.domain}
                     rootStyle={sliderStyle}
                     onUpdate={this.onUpdate}
                     onChange={this.onChange}
-                    values={defaultValues}
+                    values={this.state.domain}
+                    disabled={this.props.disabled}
                 >
                     <Rail>
                         {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}

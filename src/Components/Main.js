@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Papa from 'papaparse'
 import Card from './Card'
+import TwoSideSlider from "./Slider";
 let searchQuery;
 class Main extends Component {
     constructor() {
@@ -13,11 +14,13 @@ class Main extends Component {
             filters: {
                 search: "",
                 cuisines: "all",
-                rating: "",
+                rating: "all",
                 currency: "all"
             },
             currency: {},
             currencyData: [],
+            averageCost:{},
+            sliderValue: true
         };
         this.rating = [1, 2, 3, 4];
     }
@@ -55,12 +58,13 @@ class Main extends Component {
     };
 
     processData = (result) => {
-        let data = [];
-        let arr = result.data;
-        let cuisines = [];
-        let currency = {};
-        let currencyData = this.state.currencyData;
-        let headings = arr[0].map((item)=>{
+        let data = [],
+            arr = result.data,
+            cuisines = [],
+            currency = {},
+            averageCost = {},
+            currencyData = this.state.currencyData,
+            headings = arr[0].map((item)=>{
             if(item.includes(" ")){
                 return item.split(' ').reduce((acc,val,index) => {
                     let value = val.substr(0,1).toUpperCase() + val.substr(1).toLowerCase();
@@ -98,23 +102,42 @@ class Main extends Component {
                         }
                     }
                     //Unique Currency
-                    if (headings[index] === "currency" && currencyData.length > 0 && !(Object.keys(currency).includes(item.split('(')[0].trim().toLowerCase()))) { // Fetch from currency - add  symbol
+                    if (headings[index] === "currency" && currencyData.length > 0 ) { // Fetch from currency - add  symbol
                         // Symbol - given - if not given then -
-                        for (let obj of currencyData) {
-                            if (obj.currencies[0].name.trim().toLowerCase().includes(item.split('(')[0].trim().toLowerCase())) {
-                                currency = {
-                                    ...currency,
-                                    [item.split('(')[0].trim().toLowerCase()]: obj.currencies[0].symbol
-                                };
-                                break;
+                        let c = item.split('(')[0].trim().toLowerCase();
+                        if(!(Object.keys(currency).includes(c))) {
+                            for (let obj of currencyData) {
+                                if (obj.currencies[0].name.trim().toLowerCase().includes(c)) {
+                                    currency = {
+                                        ...currency,
+                                        [c]: obj.currencies[0].symbol
+                                    };
+                                    break;
+                                }
                             }
+                        }
+                        // Min and max value for particular currency -
+                        if(!Object.keys(averageCost).includes(c))
+                        {
+                            let costObj = {
+                                minVal: arr[i][index-1],
+                                maxVal: arr[i][index-1]
+                            };
+                            averageCost = {
+                                ...averageCost,
+                                [c] : costObj
+                            }
+                        }
+                        else{
+                            averageCost[c].minVal = Math.min(arr[i][index-1],averageCost[c].minVal);
+                            averageCost[c].maxVal = Math.max(arr[i][index-1],averageCost[c].maxVal);
                         }
                     }
                 });
                 data.push(obj);
             }
         }
-        this.setState({data,filterData:data,cuisines,loader:false,currency});
+        this.setState({data,filterData:data,cuisines,loader:false,currency,averageCost});
     };
 
     filterOnSearch = () => {
@@ -127,7 +150,20 @@ class Main extends Component {
         }
         this.setState({filterData,loader:false})
     };
-
+    setLoader = () => {
+        this.setState({
+            loader:true
+        })
+    }
+    sliderChange = () => {
+        let filterData = JSON.parse(JSON.stringify(this.state.filterData));
+        let valueObj = this.state.averageCost[this.state.filters.currency];
+        filterData = filterData.filter(item => item.averageCostForTwo >= valueObj.minVal && item.averageCostForTwo <= valueObj.maxVal)
+        this.setState({
+            filterData,
+            loader:false
+        })
+    }
     onChangeHandler = (event) =>{
         let filters = JSON.parse(JSON.stringify(this.state.filters))
         let filterData = JSON.parse(JSON.stringify(this.state.data));
@@ -157,7 +193,8 @@ class Main extends Component {
         this.setState({
             filters,
             filterData,
-            loader:filters.search.length>0
+            loader:filters.search.length>0,
+            sliderValue: filters.currency === "all"
         });
     }
 
@@ -194,7 +231,6 @@ class Main extends Component {
                             <label htmlFor={"currency"}>None</label>
                             {Object.keys(this.state.currency).map((item,index) =>
                                 (   <React.Fragment key={index}>
-
                                     <input onChange={this.onChangeHandler} value={item} type="radio" name="currency" />
                                     <label htmlFor={"currency"}>{item}</label>
                                     </React.Fragment>
@@ -202,9 +238,10 @@ class Main extends Component {
                             }
                         </div>
                     </div>
-                </div>
-                <div className="filters-selected">
-
+                    <div className="filter-wrapper">
+                        <label htmlFor={"averageCost"}>Cost For Two</label>
+                        <TwoSideSlider className={"filter"} setLoader={this.setLoader} domain={this.state.averageCost[this.state.filters.currency]} sliderChange={this.sliderChange} disabled={this.state.sliderValue}  />
+                    </div>
                 </div>
                 <div className="outer">
                     {this.state.loader ?
