@@ -15,7 +15,8 @@ class Main extends Component {
                 search: "",
                 cuisines: "all",
                 rating: "all",
-                currency: "all"
+                currency: "all",
+                averageCost: {minVal: 0,maxVal: 400}
             },
             currency: {},
             currencyData: [],
@@ -104,9 +105,7 @@ class Main extends Component {
                     //Unique Currency
                     if (headings[index] === "currency" && currencyData.length > 0 ) { // Fetch from currency - add  symbol
                         // Symbol - given - if not given then -
-
                         let c = item.split('(')[0].trim().toLowerCase();
-                        console.log('c',c)
                         if(!(Object.keys(currency).includes(c))) {
                             for (let obj of currencyData) {
                                 if (obj.currencies[0].name.trim().toLowerCase().includes(c)) {
@@ -160,13 +159,16 @@ class Main extends Component {
     }
     sliderChange = async (minVal,maxVal) => {
         let filterData = await this.onChangeHandler().then(data=>data);
-        console.log(filterData);
         let currency = this.state.filters.currency.toLowerCase();
+        let filters = JSON.parse(JSON.stringify(this.state.filters))
         filterData = filterData.filter(item => item.currency.trim().toLowerCase().split('(')[0].includes(currency)
             && item.averageCostForTwo >= minVal && item.averageCostForTwo <= maxVal)
+        filters.averageCost.minVal = minVal;
+        filters.averageCost.maxVal = maxVal;
         this.setState({
             filterData,
-            loader:false
+            loader:false,
+            filters
         })
     }
     onChangeHandler = (event={
@@ -189,12 +191,18 @@ class Main extends Component {
             filterData = filterData.filter(item => item.cuisines.toLowerCase().includes(filters.cuisines.toLowerCase()));
         }
         if((event.target.name === "currency" && filters.currency !== "all") || filters.currency !== "all")
-        {
+        {   filters.averageCost = this.state.averageCost[filters.currency];
             filterData = filterData.filter(item => item.currency.toLowerCase().includes(filters.currency.toLowerCase()));
         }
         if((event.target.name === "rating" && filters.rating !=="all") || filters.rating !== "all")
         {
             filterData = filterData.filter(item => item.aggregateRating >= filters.rating)
+        }
+        if(filters.currency !== "all" && this.state.averageCost[this.state.filters.currency] !== filters.averageCost)
+        {
+            let averageCost= this.state.filters.averageCost;
+            filterData = filterData.filter(item => item.currency.trim().toLowerCase().includes(filters.currency.toLowerCase())
+                && item.averageCostForTwo >= averageCost.minVal && item.averageCostForTwo <= averageCost.maxVal)
         }
         console.log(event.target.id,"value",event.target.value);
         //If search value exist then loader will get false in that only

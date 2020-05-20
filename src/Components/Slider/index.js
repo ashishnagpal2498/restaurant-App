@@ -37,7 +37,6 @@ class TwoSideSlider extends Component {
 
     };
     render() {
-        console.log(this.props,"domain -- ",this.state.domain)
         return (
             <div>
                 <Slider
