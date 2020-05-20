@@ -64,6 +64,10 @@
     display: flex;
     justify-content: center;
 }
+.filter-div  input:focus,
+.filter-div select:focus{
+    outline: none;
+}
 .filter-wrapper {
     flex: 1 25%;
     max-width: 25%;
@@ -72,12 +76,55 @@
     display: block;
     font-size: 16px;
     margin-bottom: 5px;
+    position: relative;
 }
 .filter {
     border-radius: 20px;
     padding: 10px;
     font-size: 15px;
     margin: 0 15px;
+}
+.filter-input{
+  display: none;
+}
+.filter-value-wrapper{
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+.filter-value{
+    padding-left: 30px;
+}
+.filter-icon{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 100%;
+}
+.optionList {
+    height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: scroll;
+    transition: height 0.4s;
+}
+.optionList li {
+    padding: 10px;
+    font-size: 15px;
+    display: block;
+    width: 100%;
+}
+.displayList{
+    height: 150px;
 }
 .filter option{
     padding: 10px;
