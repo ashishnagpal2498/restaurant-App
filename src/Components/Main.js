@@ -104,7 +104,9 @@ class Main extends Component {
                     //Unique Currency
                     if (headings[index] === "currency" && currencyData.length > 0 ) { // Fetch from currency - add  symbol
                         // Symbol - given - if not given then -
+
                         let c = item.split('(')[0].trim().toLowerCase();
+                        console.log('c',c)
                         if(!(Object.keys(currency).includes(c))) {
                             for (let obj of currencyData) {
                                 if (obj.currencies[0].name.trim().toLowerCase().includes(c)) {
@@ -153,18 +155,24 @@ class Main extends Component {
     setLoader = () => {
         this.setState({
             loader:true
-        })
+        },()=> console.log('loaderSet'))
+
     }
-    sliderChange = () => {
-        let filterData = JSON.parse(JSON.stringify(this.state.filterData));
-        let valueObj = this.state.averageCost[this.state.filters.currency];
-        filterData = filterData.filter(item => item.averageCostForTwo >= valueObj.minVal && item.averageCostForTwo <= valueObj.maxVal)
+    sliderChange = async (minVal,maxVal) => {
+        let filterData = await this.onChangeHandler().then(data=>data);
+        console.log(filterData);
+        let currency = this.state.filters.currency.toLowerCase();
+        filterData = filterData.filter(item => item.currency.trim().toLowerCase().split('(')[0].includes(currency)
+            && item.averageCostForTwo >= minVal && item.averageCostForTwo <= maxVal)
         this.setState({
             filterData,
             loader:false
         })
     }
-    onChangeHandler = (event) =>{
+    onChangeHandler = (event={
+        target:{id:"",name:""}
+    }) =>{
+        console.log('event',event)
         let filters = JSON.parse(JSON.stringify(this.state.filters))
         let filterData = JSON.parse(JSON.stringify(this.state.data));
         filters[event.target.name] = event.target.value;
@@ -190,13 +198,18 @@ class Main extends Component {
         }
         console.log(event.target.id,"value",event.target.value);
         //If search value exist then loader will get false in that only
-        this.setState({
-            filters,
-            filterData,
-            loader:filters.search.length>0,
-            sliderValue: filters.currency === "all"
-        });
-    }
+      return new Promise((resolve,reject)=>{
+          this.setState({
+              filters,
+              filterData,
+              loader:filters.search.length>0 || !event.target.name,
+              sliderValue: filters.currency === "all"
+          },() => {
+              resolve(this.state.filterData);
+          });
+
+      })
+    };
 
     render() {
         return (

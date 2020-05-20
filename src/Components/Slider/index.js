@@ -8,25 +8,36 @@ const sliderStyle = {
     boxSizing: "border-box"
 };
 
-const domain = [100, 400];
-
 let sliderTimeOut;
 
 class TwoSideSlider extends Component {
-    state = {
-        domain: this.props.domain ? [this.props.domain.minVal,this.props.domain.maxVal]   : [0,400]
-    };
+    constructor(){
+        super();
+        this.state = {
+            domain: [0,1000]
+        };
+    }
+    componentWillReceiveProps(nextProps, nextContext) {
+        if(nextProps.domain && nextProps.domain !== this.props.domain){
+            this.setState({
+                domain: [nextProps.domain.minVal,nextProps.domain.maxVal]
+            })
+
+        }
+    }
+
     onUpdate = (value) => {
         clearTimeout(sliderTimeOut);
         sliderTimeOut = setTimeout(()=> { console.log(value);
             this.props.setLoader();
-            this.props.sliderChange();
+            this.props.sliderChange(value[0],value[1]);
         },1000)
     };
     onChange = () => {
 
     };
     render() {
+        console.log(this.props,"domain -- ",this.state.domain)
         return (
             <div>
                 <Slider
@@ -49,8 +60,9 @@ class TwoSideSlider extends Component {
                                     <Handle
                                         key={handle.id}
                                         handle={handle}
-                                        domain={domain}
+                                        domain={this.state.domain}
                                         getHandleProps={getHandleProps}
+                                        disabled={this.props.disabled}
                                     />
                                 ))}
                             </div>
@@ -65,12 +77,14 @@ class TwoSideSlider extends Component {
                                         source={source}
                                         target={target}
                                         getTrackProps={getTrackProps}
+                                        disabled={this.props.disabled}
                                     />
                                 ))}
                             </div>
                         )}
                     </Tracks>
-                    <Ticks count={5}>
+                    <Ticks count={5}
+                    disabled={this.props.disabled}>
                         {({ ticks }) => (
                             <div className="slider-ticks">
                                 {ticks.map(tick => (
