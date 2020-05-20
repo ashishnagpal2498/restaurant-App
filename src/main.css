@@ -79,8 +79,8 @@
     position: relative;
 }
 .filter {
+    position: relative;
     border-radius: 20px;
-    padding: 10px;
     font-size: 15px;
     margin: 0 15px;
 }
@@ -90,12 +90,14 @@
 .filter-value-wrapper{
     position: relative;
     width: 100%;
-    padding: 5px;
-    border: 2px solid black;
-    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 0 2px rgb(204, 204, 204);
+    cursor: pointer;
 }
 .filter-value{
-    padding-left: 30px;
+    padding-left: 10px;
+    pointer-events: none;
+    text-transform: capitalize;
 }
 .filter-icon{
     position: absolute;
@@ -103,28 +105,49 @@
     top: 0;
     width: 30px;
     height: 100%;
+    pointer-events: none;
 }
 .optionList {
     height: 0;
     position: absolute;
-    top: 0;
+    top: 42px;
     left: 0;
     width: 100%;
-    margin: 0;
     padding: 0;
     opacity: 0;
+    z-index: 5;
+    background-color: #fff;
     visibility: hidden;
     overflow-y: scroll;
-    transition: height 0.4s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.4s ease-in-out;
+}
+.optionList::-webkit-scrollbar {
+    width: 10px;
+}
+.optionList::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+.optionList::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 100px;
 }
 .optionList li {
-    padding: 10px;
+    padding: 10px 20px;
     font-size: 15px;
     display: block;
     width: 100%;
+    text-transform: capitalize;
+}
+.optionList li:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
 }
 .displayList{
     height: 150px;
+    opacity: 1;
+    visibility: visible;
 }
 .filter option{
     padding: 10px;

@@ -219,10 +219,30 @@ class Main extends Component {
       })
     };
     viewList = (event) => {
-        let inputValue = event.target;
-        let inputItem = event.target.parentNode.childNodes[1];
-        let listItem = event.target.parentNode.childNodes[2];
-        listItem.classList.add('displayList')
+        let outerDiv = event.target.parentNode;
+        let clickedDiv = event.target;
+        let inputId;
+        if(outerDiv.classList.value.includes("filter")) {
+            let listItem = outerDiv.childNodes[1];
+            listItem.classList.toggle('displayList')
+        }
+        else if(clickedDiv.hasAttribute('data-value')){
+           let filters = JSON.parse(JSON.stringify(this.state.filters))
+            let attributeValue = clickedDiv.getAttribute('data-value');
+            outerDiv.parentNode.childNodes[0].childNodes[0].textContent = attributeValue;
+            outerDiv.parentNode.childNodes[1].classList.remove('displayList');
+            inputId = outerDiv.parentElement.parentElement.getAttribute('id');
+            filters[inputId] = attributeValue;
+            this.setState({filters}, ()=> {
+                // Dispatch Event or call the function
+                // let event = new Event('input', { bubbles: true });
+                // console.log('Value ----- ',outerDiv.parentNode.childNodes[1])
+                // outerDiv.parentNode.childNodes[1].dispatchEvent(event);
+                console.log(this.state.filters);
+                this.onChangeHandler({target: {name:inputId,id:inputId,value:attributeValue}})
+                console.log('Event dispatch')
+            })
+        }
     }
     render() {
         return (
@@ -233,18 +253,18 @@ class Main extends Component {
                 </div>
                 <h3>Filter By: </h3>
                 <div className="filter-div">
-                <div className="filter-wrapper">
+                <div className="filter-wrapper" id="cuisines">
                     <label htmlFor={"cuisines"}>Cuisines</label>
                     <div className="filter" onClick={this.viewList}>
                         <div className="filter-value-wrapper" >
-                            <span className="filter-value">Value</span>
+                            <span className="filter-value">All</span>
                             <span className="filter-icon">Icon</span>
                         </div>
-                        <input readOnly className="filter-input" value={this.state.filters.cuisines} id="cuisines" onChange={this.onChangeHandler} name="cuisines" />
+                        {/*<input className="filter-input" value={this.state.filters.cuisines} id="cuisines" onChange={this.onChangeHandler} name="cuisines" />*/}
                         <ul className="optionList">
-                            <li onClick={""}>All</li>
+                            <li data-value="all">All</li>
                             {this.state.cuisines.map((item,index)=> {
-                                return <li value={item} key={index}>{item}</li>
+                                return <li data-value={item} key={index}>{item}</li>
                             })}
                         </ul>
                     </div>
@@ -255,13 +275,26 @@ class Main extends Component {
                 {/*    })}*/}
                 {/*</select>*/}
                 </div>
-                    <div className="filter-wrapper">
+                    <div className="filter-wrapper" id="rating">
                         <label htmlFor={"rating"}>Rating</label>
-                <select value={this.state.filters.rating} onChange={this.onChangeHandler} className="filter" id="rating" name="rating">
-                    <option value="all">None</option>
-                    {this.rating.map((item,index) =>
-                        (<option value={item} key={index}>{"> "+item}</option> )) }
-                </select>
+                        <div className="filter" onClick={this.viewList}>
+                            <div className="filter-value-wrapper" >
+                                <span className="filter-value">All</span>
+                                <span className="filter-icon">Icon</span>
+                            </div>
+                            {/*<input className="filter-input" value={this.state.filters.cuisines} id="cuisines" onChange={this.onChangeHandler} name="cuisines" />*/}
+                            <ul className="optionList">
+                                <li data-value="all">All</li>
+                                {this.rating.map((item,index)=> {
+                                    return <li data-value={item} key={index}>{item}</li>
+                                })}
+                            </ul>
+                        </div>
+                {/*<select value={this.state.filters.rating} onChange={this.onChangeHandler} className="filter" id="rating" name="rating">*/}
+                {/*    <option value="all">None</option>*/}
+                {/*    {this.rating.map((item,index) =>*/}
+                {/*        (<option value={item} key={index}>{"> "+item}</option> )) }*/}
+                {/*</select>*/}
                     </div>
                     <div className="filter-wrapper">
                         <label htmlFor={"currency"}>Currency</label>
