@@ -57,7 +57,7 @@ class Main extends Component {
             complete: this.processData
         });
     };
-
+    // Function to extract values from the data
     processData = (result) => {
         let data = [],
             arr = result.data,
@@ -105,10 +105,11 @@ class Main extends Component {
                     //Unique Currency
                     if (headings[index] === "currency" && currencyData.length > 0 ) { // Fetch from currency - add  symbol
                         // Symbol - given - if not given then -
-                        let c = item.split('(')[0].trim().toLowerCase();
+                        let c = item.split('(')[0].trim().toLowerCase().split(" ").join("_");
+                        console.log(c,"val")
                         if(!(Object.keys(currency).includes(c))) {
                             for (let obj of currencyData) {
-                                if (obj.currencies[0].name.trim().toLowerCase().includes(c)) {
+                                if (obj.currencies[0].name.trim().toLowerCase().includes(c.split('_').join(' '))) {
                                     currency = {
                                         ...currency,
                                         [c]: obj.currencies[0].symbol
@@ -140,8 +141,10 @@ class Main extends Component {
         }
         this.setState({data,filterData:data,cuisines,loader:false,currency,averageCost});
     };
-
+    //Function to handle search
     filterOnSearch = () => {
+        // In this case - this will work as this function is called by onChangeHandler
+        // Therefore all the filters have been applied before coming to this stage
         let filterData = JSON.parse(JSON.stringify(this.state.filterData));
         let filters = this.state.filters;
         if(filters.search)
@@ -156,10 +159,13 @@ class Main extends Component {
             loader:true
         },()=> console.log('loaderSet'))
 
-    }
+    };
+    // Function to handle slider value change
     sliderChange = async (minVal,maxVal) => {
-        let filterData = await this.onChangeHandler().then(data=>data);
-        let currency = this.state.filters.currency.toLowerCase();
+        // Using promise of OnChangeHandler here --
+        // let filterData = JSON.parse(JSON.stringify(this.state.filterData))
+        let filterData = await this.onChangeHandler({target:{name:"averageCost",id:"averageCost",value:{}}}).then(data => data);
+        let currency = this.state.filters.currency.toLowerCase().split("_").join(" ");
         let filters = JSON.parse(JSON.stringify(this.state.filters))
         filterData = filterData.filter(item => item.currency.trim().toLowerCase().split('(')[0].includes(currency)
             && item.averageCostForTwo >= minVal && item.averageCostForTwo <= maxVal)
@@ -170,54 +176,67 @@ class Main extends Component {
             loader:false,
             filters
         })
-    }
+    };
+    // Function to handle state change of input
     onChangeHandler = (event={
-        target:{id:"",name:""}
+        target:{id:"",name:""} // Default value of event used, incase of function call -
     }) =>{
-        console.log('event',event)
-        let filters = JSON.parse(JSON.stringify(this.state.filters))
+        let filters = JSON.parse(JSON.stringify(this.state.filters));
         let filterData = JSON.parse(JSON.stringify(this.state.data));
         filters[event.target.name] = event.target.value;
         this.setState({loader:true});
+        // Filter the list on the basis of search value
         if(event.target.id === "search" || this.state.filters.search){
-            //Filter the list -
+            // Debouncing
             clearTimeout(searchQuery);
             searchQuery = setTimeout(this.filterOnSearch,800);
         }
+
+        // Filter list on basis of selected cuisine value
         if((event.target.id === "cuisines" && filters.cuisines !== "all") || filters.cuisines !== "all" ) {
-            console.log(event.target.value,"CUISINE");
-            // event.target. value - new search value - vo search karke and
-            // filter. cuisine , then - value initially not set , then -
             filterData = filterData.filter(item => item.cuisines.toLowerCase().includes(filters.cuisines.toLowerCase()));
         }
+
+        //Filter list on the basis of selected currency
         if((event.target.name === "currency" && filters.currency !== "all") || filters.currency !== "all")
-        {   filters.averageCost = this.state.averageCost[filters.currency];
-            filterData = filterData.filter(item => item.currency.toLowerCase().includes(filters.currency.toLowerCase()));
+        {   if(event.target.name === "currency") filters.averageCost = this.state.averageCost[filters.currency];
+            filterData = filterData.filter(item => item.currency.toLowerCase().includes(filters.currency.toLowerCase().split("_").join(" ")));
         }
+
+        //Filter list on the basis of rating
         if((event.target.name === "rating" && filters.rating !=="all") || filters.rating !== "all")
         {
             filterData = filterData.filter(item => item.aggregateRating >= filters.rating)
         }
-        if(filters.currency !== "all" && this.state.averageCost[filters.currency] !== filters.averageCost)
-        {   console.log('Average cost ',this.state.averageCost[this.state.filters.currency],"filter- avg cost",filters.averageCost )
-            let averageCost= this.state.filters.averageCost;
-            filterData = filterData.filter(item => item.currency.trim().toLowerCase().includes(filters.currency.toLowerCase())
+
+        //Filter list for price range
+        if(event.target.name !== "averageCost" && filters.currency !== "all" && this.state.averageCost[filters.currency] !== filters.averageCost)
+        {   let averageCost= this.state.filters.averageCost;
+            filterData = filterData.filter(item => item.currency.trim().toLowerCase().includes(filters.currency.toLowerCase().split("_").join(" "))
                 && item.averageCostForTwo >= averageCost.minVal && item.averageCostForTwo <= averageCost.maxVal)
         }
-        console.log(event.target.id,"value",event.target.value);
-        //If search value exist then loader will get false in that only
+
+        // Promise required to change the slider value -
+        // As if we take only filterData from state in case of slider - i.e JSON.parse(JSON.stringify(filterData));
+        // If value removed once, slider reset, value will not appear
+        // because - slider is filtering from filterData. Therefore incase of slider - we need promise -
+        // TRY Filter - Cuisine - French - Currency as Botswana and reduce the value to 1000
+        // Uncomment line number 163 and comment line 164
       return new Promise((resolve,reject)=>{
           this.setState({
               filters,
               filterData,
-              loader:filters.search.length>0 || !event.target.name,
-              sliderValue: filters.currency === "all"
+              loader:filters.search.length>0 || event.target.name === "averageCost",
+              //2. If search value exist then loader will get false in that function only
+              // or this function is called by Slider function
+              sliderValue: filters.currency === "all" //Disable value for slider
           },() => {
               resolve(this.state.filterData);
           });
 
       })
     };
+    // Function to handle custom select option
     viewList = (event) => {
         let outerDiv = event.target.parentNode;
         let clickedDiv = event.target;
@@ -234,11 +253,8 @@ class Main extends Component {
             inputId = outerDiv.parentElement.parentElement.getAttribute('id');
             filters[inputId] = attributeValue;
             this.setState({filters}, ()=> {
-                // Dispatch Event or call the function
-                // let event = new Event('input', { bubbles: true });
-                // console.log('Value ----- ',outerDiv.parentNode.childNodes[1])
-                // outerDiv.parentNode.childNodes[1].dispatchEvent(event);
-                // 3. Changing the value of input box does not trigger onChange function of input -
+                // Dispatch Event or call the onChangeHandler function
+                // 3. Changing the value of input box by setState does not trigger onChange function of input -
                 this.onChangeHandler({target: {name:inputId,id:inputId,value:attributeValue}})
             })
         }
@@ -267,21 +283,15 @@ class Main extends Component {
                             })}
                         </ul>
                     </div>
-                {/*    <select className="filter" value={this.state.filters.cuisines} onChange={this.onChangeHandler} id="cuisines" name="cuisines">*/}
-                {/*    <option value="all">All</option>*/}
-                {/*    {this.state.cuisines.map((item,index)=> {*/}
-                {/*        return <option value={item} key={index}>{item}</option>*/}
-                {/*    })}*/}
-                {/*</select>*/}
                 </div>
                     <div className="filter-wrapper" id="rating">
+                        {/*Custom select option no need of input box*/}
                         <label htmlFor={"rating"}>Rating</label>
                         <div className="filter" onClick={this.viewList}>
                             <div className="filter-value-wrapper" >
                                 <span className="filter-value">All</span>
                                 <span className="filter-icon"><i className="fa fa-chevron-down"/> </span>
                             </div>
-                            {/*<input className="filter-input" value={this.state.filters.cuisines} id="cuisines" onChange={this.onChangeHandler} name="cuisines" />*/}
                             <ul className="optionList">
                                 <li data-value="all">All</li>
                                 {this.rating.map((item,index)=> {
@@ -289,11 +299,6 @@ class Main extends Component {
                                 })}
                             </ul>
                         </div>
-                {/*<select value={this.state.filters.rating} onChange={this.onChangeHandler} className="filter" id="rating" name="rating">*/}
-                {/*    <option value="all">None</option>*/}
-                {/*    {this.rating.map((item,index) =>*/}
-                {/*        (<option value={item} key={index}>{"> "+item}</option> )) }*/}
-                {/*</select>*/}
                     </div>
                     <div className="filter-wrapper fx-b40">
                         <label htmlFor={"currency"}>Currency</label>

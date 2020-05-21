@@ -15,7 +15,7 @@ const Card = ({res,currency}) => {
       }
     };
     const currencySymbol = (field) => {
-        let currencyKey = Object.keys(currency).find(item => field.toLowerCase().includes(item));
+        let currencyKey = Object.keys(currency).find(item => field.toLowerCase().includes(item.toLowerCase().split("_").join(" ")));
         return currencyKey ? currency[currencyKey] : "$"
     };
     const textColor = (value) => {

@@ -24,7 +24,6 @@
     }
 }
 .heading {
-    font-size: 20px;
     letter-spacing: 1.5px;
     font-family: "Calibri",sans-serif;
     background-color: black;
@@ -183,7 +182,6 @@
 }
 
 /*Custom Radio Box*/
-/* Customize the label (the radioBox) */
 .radioBox {
     display: inline-block;
     position: relative;
@@ -197,7 +195,6 @@
     user-select: none;
 }
 
-/* Hide the browser's default radio button */
 .radioBox input {
     position: absolute;
     opacity: 0;
@@ -206,7 +203,6 @@
     width: 0;
 }
 
-/* Create a custom radio button */
 .checkmark {
     position: absolute;
     top: 0;
@@ -217,29 +213,24 @@
     border-radius: 50%;
 }
 
-/* On mouse-over, add a grey background color */
 .radioBox:hover input ~ .checkmark {
     background-color: #ccc;
 }
 
-/* When the radio button is checked, add a blue background */
 .radioBox input:checked ~ .checkmark {
     background-color: black;
 }
 
-/* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
 
-/* Show the indicator (dot/circle) when checked */
 .radioBox input:checked ~ .checkmark:after {
     display: block;
 }
 
-/* Style the indicator (dot/circle) */
 .radioBox .checkmark:after {
     top: 50%;
     left: 50%;
@@ -249,24 +240,7 @@
     border-radius: 100px;
     background: white;
 }
-/*.filter-dropdown{*/
-/*    position: relative;*/
-/*    display: inline-block;*/
-/*}*/
-/*.filter-dropdown-menu {*/
-/*    list-style-type: none;*/
-/*    padding: 0;*/
-/*    box-shadow: 0 0 6px rgba(0,0,0,0.2);*/
-/*    border-bottom-left-radius: 10px;*/
-/*    border-bottom-right-radius: 10px;*/
-/*    position: absolute;*/
-/*    top: 10px;*/
-/*    left: 0;*/
-/*}*/
-
-/*.filter-dropdown:hover > .filter-dropdown-menu{*/
-/*    display: block;*/
-/*}*/
+/*End of customised radio button*/
 
 .outer {
     position: relative;
