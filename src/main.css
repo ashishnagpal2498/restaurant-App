@@ -64,11 +64,14 @@
     opacity: 1;
 }
 .filter-heading {
-
+    margin: 10px 0;
+    font-size: 20px;
+    padding: 0 20px;
 }
 .filter-div {
     display: flex;
     justify-content: center;
+    padding: 0 20px;
 }
 .filter-div  input:focus,
 .filter-div select:focus{
@@ -77,6 +80,7 @@
 .filter-wrapper {
     flex: 1 15%;
     max-width: 15%;
+    padding: 0 10px;
 }
 .fx-b30{
     flex: 1 30%;
@@ -86,13 +90,12 @@
     display: block;
     font-size: 16px;
     margin-bottom: 5px;
-    position: relative;
+    font-weight: 500;
 }
 .filter {
     position: relative;
     border-radius: 20px;
     font-size: 15px;
-    margin: 0 15px;
 }
 .filter-value-wrapper{
     position: relative;
@@ -305,7 +308,7 @@
     max-width: 100%;
     display: flex;
     flex-wrap: wrap;
-    padding: 10px 15px;
+    padding: 10px;
 }
 .card-details > *{
     padding: 5px;
@@ -355,6 +358,13 @@
     padding: 0 20px;
     max-width: 20%;
     position: relative;
+    display: inline-block;
+}
+.availabitity-icons a > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .ml-10{
     margin-left: 10px;

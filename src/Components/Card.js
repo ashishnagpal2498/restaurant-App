@@ -68,7 +68,7 @@ const Card = ({res,currency}) => {
                         </div>
                         <div className="fx-b50" style={{textAlign:"end"}}>
                             Votes:
-                            <div className="shineBox ml-10">
+                            <div className="shineBox ml-10 fx-b100">
                             <span>
                                {res.votes}
                             </span>

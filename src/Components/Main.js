@@ -250,7 +250,7 @@ class Main extends Component {
                     <input type="text" name="search" placeholder=" " value={this.state.filters.search} onChange={this.onChangeHandler} id="search"/>
                     <label className="placeholder-label" htmlFor="search">Search a restaurant</label>
                 </div>
-                <h3>Filter By: </h3>
+                <h3 className="filter-heading">Filter By: </h3>
                 <div className="filter-div">
                 <div className="filter-wrapper" id="cuisines">
                     <label htmlFor={"cuisines"}>Cuisines</label>
