@@ -7,21 +7,21 @@ class Main extends Component {
     constructor() {
         super();
         this.state = {
-            loader:true,
-            data: [],
-            filterData: [],
-            cuisines: [],
-            filters: {
+            loader:true, // Loader when list refreshes
+            data: [], // list of restaurants
+            filterData: [], // data after filter
+            cuisines: [], // unique value of cuisines extracted from data
+            filters: { // Filters applied to restaurant list
                 search: "",
                 cuisines: "all",
                 rating: "all",
                 currency: "all",
                 averageCost: {minVal: 0,maxVal: 400}
             },
-            currency: {},
-            currencyData: [],
-            averageCost:{},
-            sliderValue: true
+            currency: {}, // unique currency value mapped with their symbols
+            currencyData: [], // all the currencies fetched from API
+            averageCost:{}, // min and max value of particular currency
+            sliderValue: true // disable the slider
         };
         this.rating = [1, 2, 3, 4];
     }
@@ -29,7 +29,6 @@ class Main extends Component {
     componentWillMount() {
         this.fetchCurrency();
         this.readCSV();
-
     }
 
     fetchCurrency = async () => {
@@ -40,19 +39,19 @@ class Main extends Component {
             this.setState({currencyData})
         }
     };
+    // Function to fetch the CSV file
     fetchCsv = () => {
         return fetch('/restaurantsList.csv').then(function (response) {
             let reader = response.body.getReader();
             let decoder = new TextDecoder('utf-8');
-
             return reader.read().then(function (result) {
                 return decoder.decode(result.value);
             });
         });
     };
+    // Read CSV file
     readCSV = async () => {
         let csvData = await this.fetchCsv();
-
         Papa.parse(csvData, {
             complete: this.processData
         });
@@ -84,7 +83,7 @@ class Main extends Component {
                     obj = {
                         ...obj,
                         [headings[index]]: item
-                    }
+                    };
                     // Unique Cuisines
                     if (headings[index] === "cuisines") {
                         if (item.includes(",")) {
@@ -106,7 +105,6 @@ class Main extends Component {
                     if (headings[index] === "currency" && currencyData.length > 0 ) { // Fetch from currency - add  symbol
                         // Symbol - given - if not given then -
                         let c = item.split('(')[0].trim().toLowerCase().split(" ").join("_");
-                        console.log(c,"val")
                         if(!(Object.keys(currency).includes(c))) {
                             for (let obj of currencyData) {
                                 if (obj.currencies[0].name.trim().toLowerCase().includes(c.split('_').join(' '))) {
@@ -154,10 +152,11 @@ class Main extends Component {
         }
         this.setState({filterData,loader:false})
     };
+    //Function to set loader in case of slider -
     setLoader = () => {
         this.setState({
             loader:true
-        },()=> console.log('loaderSet'))
+        })
 
     };
     // Function to handle slider value change
@@ -327,6 +326,8 @@ class Main extends Component {
                     {this.state.loader ?
                         <div className="loader"> </div>
                         :
+                        !this.state.filterData.length ?
+                            <div className="empty-list">Oops !! <span className="ml-10">No Restaurants found.</span> </div> :
                         <ul className="cards">
                             {this.state.filterData.map((restaurant, index) => {
                                 return <Card key={index} currency={this.state.currency} res={restaurant}/>

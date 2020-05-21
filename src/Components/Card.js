@@ -41,7 +41,6 @@ const Card = ({res,currency}) => {
                         <div className="shineBox">
                             <span>
                                 {res.aggregateRating}
-                                <span></span>
                             </span>
                         </div>
                         <div className="cuisines">

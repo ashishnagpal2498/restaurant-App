@@ -357,5 +357,12 @@
     flex-basis: 40%;
     max-width: 40%;
 }
+.empty-list{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 25px;
+}
 /*Invert Colors background: #222;
 color: #fff;*/
