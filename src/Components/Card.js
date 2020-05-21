@@ -17,7 +17,17 @@ const Card = ({res,currency}) => {
     const currencySymbol = (field) => {
         let currencyKey = Object.keys(currency).find(item => field.toLowerCase().includes(item));
         return currencyKey ? currency[currencyKey] : "$"
+    };
+    const textColor = (value) => {
+        if(value.includes(" ")){
+           return "blue"
+        }
+        else if(value.toLowerCase().includes("white")){
+            return "black"
+        }
+        else return value.toLowerCase();
     }
+
         return (
             <li className="card-item">
                 <div className="card-body">
@@ -38,23 +48,31 @@ const Card = ({res,currency}) => {
                             {res.cuisines}
                         </div>
                         {/*Average Cost */}
-                        <div className="average-cost">
-                            Cost for Two
-                        </div>
+                        <div className="fx-b100 d-flex">
                         <div className="fx-b50">
-                            {res.averageCostForTwo}
-                            <span>{currencySymbol(res.currency)}</span>
+                            <div className="average-cost">
+                                Cost for Two
+                                <span className="ml-10">{res.averageCostForTwo}  </span>
+                                <span>{currencySymbol(res.currency)}</span>
+                            </div>
+                        </div>
+                        <div className="fx-b50 availabitity-icons">
+                            <a title="Table Available"> <i className="fa fa-utensils" style={{color: res.hasTableBooking === "Yes" ? "green": "red"}}/></a>
+                            <a title="Delivery Available"><i className="fa fa-motorcycle"  style={{color: res.hasOnlineDelivery === "Yes" ? "green": "red"}}/></a>
+                        </div>
                         </div>
                         {/*Rating And Votes*/}
-                        <div className="fx-b50" style={{}}>
-                           Rating:  {res.ratingText}
+                        <div className="fx-b100 d-flex">
+                        <div className="fx-b50" >
+                            Review:  <span className="ml-10" style={{color: textColor(res.ratingColor)}}>{res.ratingText}</span>
                         </div>
-                        <div className="fx-b50">
+                        <div className="fx-b50" style={{textAlign:"end"}}>
                             Votes:
-                            <div className="shineBox">
+                            <div className="shineBox ml-10">
                             <span>
                                {res.votes}
                             </span>
+                        </div>
                         </div>
                         </div>
                     </div>

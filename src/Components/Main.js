@@ -179,7 +179,7 @@ class Main extends Component {
         let filterData = JSON.parse(JSON.stringify(this.state.data));
         filters[event.target.name] = event.target.value;
         this.setState({loader:true});
-        if(event.target.id === "searchBox" || this.state.filters.search){
+        if(event.target.id === "search" || this.state.filters.search){
             //Filter the list -
             clearTimeout(searchQuery);
             searchQuery = setTimeout(this.filterOnSearch,800);
@@ -238,9 +238,8 @@ class Main extends Component {
                 // let event = new Event('input', { bubbles: true });
                 // console.log('Value ----- ',outerDiv.parentNode.childNodes[1])
                 // outerDiv.parentNode.childNodes[1].dispatchEvent(event);
-                console.log(this.state.filters);
+                // 3. Changing the value of input box does not trigger onChange function of input -
                 this.onChangeHandler({target: {name:inputId,id:inputId,value:attributeValue}})
-                console.log('Event dispatch')
             })
         }
     }
@@ -248,8 +247,8 @@ class Main extends Component {
         return (
             <div>
                 <div className="searchBox">
-                    <input type="text" name="search" value={this.state.filters.search} onChange={this.onChangeHandler} id="searchBox"/>
-                    <label className="placeholder-label" htmlFor="searchBox">Search a restaurant</label>
+                    <input type="text" name="search" placeholder=" " value={this.state.filters.search} onChange={this.onChangeHandler} id="search"/>
+                    <label className="placeholder-label" htmlFor="search">Search a restaurant</label>
                 </div>
                 <h3>Filter By: </h3>
                 <div className="filter-div">
@@ -258,7 +257,7 @@ class Main extends Component {
                     <div className="filter" onClick={this.viewList}>
                         <div className="filter-value-wrapper" >
                             <span className="filter-value">All</span>
-                            <span className="filter-icon">Icon</span>
+                            <span className="filter-icon"><i className="fa fa-chevron-down"/></span>
                         </div>
                         {/*<input className="filter-input" value={this.state.filters.cuisines} id="cuisines" onChange={this.onChangeHandler} name="cuisines" />*/}
                         <ul className="optionList">
@@ -280,7 +279,7 @@ class Main extends Component {
                         <div className="filter" onClick={this.viewList}>
                             <div className="filter-value-wrapper" >
                                 <span className="filter-value">All</span>
-                                <span className="filter-icon">Icon</span>
+                                <span className="filter-icon"><i className="fa fa-chevron-down"/> </span>
                             </div>
                             {/*<input className="filter-input" value={this.state.filters.cuisines} id="cuisines" onChange={this.onChangeHandler} name="cuisines" />*/}
                             <ul className="optionList">
@@ -296,21 +295,25 @@ class Main extends Component {
                 {/*        (<option value={item} key={index}>{"> "+item}</option> )) }*/}
                 {/*</select>*/}
                     </div>
-                    <div className="filter-wrapper">
+                    <div className="filter-wrapper fx-b40">
                         <label htmlFor={"currency"}>Currency</label>
                         <div className="checkBoxDiv">
-                            <input value="all" onChange={this.onChangeHandler} type="radio" name="currency"/>
-                            <label htmlFor={"currency"}>None</label>
+                            <label className="radioBox">None
+                                <input type="radio" value="all" onChange={this.onChangeHandler}  name="currency" />
+                                <span className="checkmark"/>
+                            </label>
                             {Object.keys(this.state.currency).map((item,index) =>
                                 (   <React.Fragment key={index}>
-                                    <input onChange={this.onChangeHandler} value={item} type="radio" name="currency" />
-                                    <label htmlFor={"currency"}>{item}</label>
+                                        <label className="radioBox">{item}
+                                            <input type="radio" onChange={this.onChangeHandler} value={item} name="currency" />
+                                            <span className="checkmark"/>
+                                        </label>
                                     </React.Fragment>
                                     ))
                             }
                         </div>
                     </div>
-                    <div className="filter-wrapper">
+                    <div className="filter-wrapper fx-b30">
                         <label htmlFor={"averageCost"}>Cost For Two</label>
                         <TwoSideSlider className={"filter"} setLoader={this.setLoader} domain={this.state.averageCost[this.state.filters.currency]} sliderChange={this.sliderChange} disabled={this.state.sliderValue}  />
                     </div>

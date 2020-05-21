@@ -4,8 +4,8 @@ import { SliderRail, Handle, Track, Tick } from "./sliderComponent"; // example 
 
 const sliderStyle = {
     position: "relative",
-    width: "100%",
-    boxSizing: "border-box"
+    width: "90%",
+    paddingTop: "15px"
 };
 
 let sliderTimeOut;
