@@ -4,7 +4,7 @@ import { SliderRail, Handle, Track, Tick } from "./sliderComponent"; // example 
 
 const sliderStyle = {
     position: "relative",
-    width: "90%",
+    width: document.body.width >= 576 ? "90%" : "100",
     paddingTop: "15px"
 };
 

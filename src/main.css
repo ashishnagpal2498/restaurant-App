@@ -387,4 +387,16 @@ color: #fff;*/
         flex-basis: 50%;
         max-width: 50%;
     }
+    .filter-wrapper.fx-b30,
+    .filter-wrapper.fx-b40{
+        flex-basis: 100%;
+        max-width: 100%;
+        margin: 5px 0;
+    }
+    .radioBox{
+        margin: 5px 0;
+    }
+    .filter-div{
+        padding-bottom: 20px;
+    }
 }
