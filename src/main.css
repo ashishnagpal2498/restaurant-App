@@ -69,6 +69,7 @@
 }
 .filter-div {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     padding: 0 20px;
 }
@@ -366,3 +367,24 @@
 }
 /*Invert Colors background: #222;
 color: #fff;*/
+@media screen and (max-width: 768px)
+{
+    .card-item{
+        margin: 10px 0;
+        flex-basis: 50%;
+        max-width: 50%;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .card-item {
+        margin: 15px 0;
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+    .filter-wrapper {
+        margin: 10px 0;
+        flex-basis: 50%;
+        max-width: 50%;
+    }
+}
