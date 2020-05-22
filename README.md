@@ -1,6 +1,6 @@
-###Project Description
 [![Netlify Status](https://api.netlify.com/api/v1/badges/fd6a0bc7-aa01-4640-a1b0-4ae768421122/deploy-status)](https://restraurant-app.netlify.app/)  
 
+###Project Description
 This project is build using ReactJs. The main aim of this project is to learn how to :-  
 
 - Read data from a CSV file using _fetch_.
